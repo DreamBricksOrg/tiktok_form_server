@@ -130,3 +130,19 @@ def download_csv_zip():
     response.headers['Content-Disposition'] = f"attachment; filename={filename_csv}_{formatted_time}.zip"
 
     return response
+
+@datalog.route('/datalog/downloadmergeddata', methods=['GET'])
+def download_merged_data():
+    filename_csv = "merged_data.csv"
+
+    # Recupera os documentos e gera os dados CSV
+    documents = get_all_documents()
+    csv_data = generate_csv(documents)
+
+    # Configura a resposta HTTP para enviar o arquivo .csv diretamente
+    response = Response(csv_data.getvalue())
+    response.headers['Content-Type'] = 'text/plain'
+    response.headers['Content-Disposition'] = f"attachment; filename={filename_csv}"
+
+    return response
+
